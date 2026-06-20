@@ -1,17 +1,25 @@
+from pathlib import Path
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 from utils.styles import load_css
+
+st.set_page_config(
+    page_title="Portfolio Risk Simulator",
+    layout="wide"
+)
 
 st.markdown(
     load_css(),
     unsafe_allow_html=True
 )
 
-st.set_page_config(
-    page_title="Portfolio Risk Simulator",
-    layout="wide"
-)
+# =====================================================
+# FILE PATHS
+# =====================================================
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+OUTPUT_DIR = BASE_DIR / "outputs"
 
 # =====================================================
 # PAGE HEADER
@@ -35,7 +43,16 @@ st.markdown(
 # LOAD RISK SCORES
 # =====================================================
 
-df = pd.read_csv("outputs/risk_scores.csv")
+try:
+
+    df = pd.read_csv(
+        OUTPUT_DIR / "risk_scores.csv"
+    )
+
+except Exception as e:
+
+    st.error(f"Unable to load risk_scores.csv: {e}")
+    st.stop()
 
 df = df.sort_values(
     "Risk_Score",
@@ -196,15 +213,12 @@ portfolio_risk = round(
 # =====================================================
 
 if portfolio_risk >= 70:
-
     risk_level = "HIGH"
 
 elif portfolio_risk >= 40:
-
     risk_level = "MODERATE"
 
 else:
-
     risk_level = "LOW"
 
 # =====================================================
@@ -216,21 +230,18 @@ st.subheader("Portfolio Risk Assessment")
 k1, k2, k3 = st.columns(3)
 
 with k1:
-
     st.metric(
         "Portfolio Risk Score",
         portfolio_risk
     )
 
 with k2:
-
     st.metric(
         "Risk Level",
         risk_level
     )
 
 with k3:
-
     st.metric(
         "Total Weight",
         f"{total_weight}%"

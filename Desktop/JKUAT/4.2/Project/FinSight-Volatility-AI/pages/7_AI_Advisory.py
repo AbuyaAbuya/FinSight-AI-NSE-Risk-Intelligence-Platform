@@ -1,22 +1,49 @@
+from pathlib import Path
 import streamlit as st
 import pandas as pd
 from utils.styles import load_css
-
-st.markdown(
-    load_css(),
-    unsafe_allow_html=True
-)
 
 st.set_page_config(
     page_title="AI Advisory",
     layout="wide"
 )
 
+st.markdown(
+    load_css(),
+    unsafe_allow_html=True
+)
+
+# =====================================================
+# FILE PATHS
+# =====================================================
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+OUTPUT_DIR = BASE_DIR / "outputs"
+
+# =====================================================
+# LOAD DATA
+# =====================================================
+
+try:
+
+    df = pd.read_csv(
+        OUTPUT_DIR / "risk_scores.csv"
+    )
+
+except Exception as e:
+
+    st.error(f"Unable to load risk_scores.csv: {e}")
+    st.stop()
+
+# =====================================================
+# PAGE HEADER
+# =====================================================
+
 st.title("🤖 AI Advisory Center")
 
-df = pd.read_csv(
-    "outputs/risk_scores.csv"
-)
+# =====================================================
+# STOCK SELECTION
+# =====================================================
 
 stock = st.selectbox(
     "Select Stock",
@@ -26,6 +53,10 @@ stock = st.selectbox(
 row = df[
     df["Code"] == stock
 ].iloc[0]
+
+# =====================================================
+# KPI CARDS
+# =====================================================
 
 c1, c2, c3 = st.columns(3)
 
@@ -49,6 +80,10 @@ with c3:
         "AI Action",
         row["Recommendation"]
     )
+
+# =====================================================
+# EXECUTIVE RECOMMENDATION
+# =====================================================
 
 st.subheader(
     "Executive Recommendation"
@@ -110,9 +145,21 @@ else:
         """
     )
 
+# =====================================================
+# ALL RECOMMENDATIONS
+# =====================================================
+
 st.subheader("All Recommendations")
 
 st.dataframe(
     df,
     use_container_width=True
+)
+
+# =====================================================
+# FOOTER
+# =====================================================
+
+st.caption(
+    "FinSight AI • AI Advisory Center • Powered by Machine Learning"
 )

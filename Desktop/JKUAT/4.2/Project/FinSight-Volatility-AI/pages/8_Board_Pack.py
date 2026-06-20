@@ -1,29 +1,44 @@
+from pathlib import Path
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 from utils.styles import load_css
-
-st.markdown(
-    load_css(),
-    unsafe_allow_html=True
-)
 
 st.set_page_config(
     page_title="Board Pack",
     layout="wide"
 )
 
+st.markdown(
+    load_css(),
+    unsafe_allow_html=True
+)
+
+# =====================================================
+# FILE PATHS
+# =====================================================
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+OUTPUT_DIR = BASE_DIR / "outputs"
+
 # =====================================================
 # LOAD DATA
 # =====================================================
 
-risk_df = pd.read_csv(
-    "outputs/risk_scores.csv"
-)
+try:
 
-metrics_df = pd.read_csv(
-    "outputs/model_metrics.csv"
-)
+    risk_df = pd.read_csv(
+        OUTPUT_DIR / "risk_scores.csv"
+    )
+
+    metrics_df = pd.read_csv(
+        OUTPUT_DIR / "model_metrics.csv"
+    )
+
+except Exception as e:
+
+    st.error(f"Unable to load required files: {e}")
+    st.stop()
 
 risk_df = risk_df.sort_values(
     "Risk_Score",
@@ -227,20 +242,26 @@ st.dataframe(
 
 st.subheader("AI Model Performance")
 
-rmse = metrics_df.loc[
-    metrics_df["Metric"] == "RMSE",
-    "Value"
-].values[0]
+rmse = float(
+    metrics_df.loc[
+        metrics_df["Metric"] == "RMSE",
+        "Value"
+    ].iloc[0]
+)
 
-mae = metrics_df.loc[
-    metrics_df["Metric"] == "MAE",
-    "Value"
-].values[0]
+mae = float(
+    metrics_df.loc[
+        metrics_df["Metric"] == "MAE",
+        "Value"
+    ].iloc[0]
+)
 
-r2 = metrics_df.loc[
-    metrics_df["Metric"] == "R2",
-    "Value"
-].values[0]
+r2 = float(
+    metrics_df.loc[
+        metrics_df["Metric"].isin(["R2", "R²"]),
+        "Value"
+    ].iloc[0]
+)
 
 m1, m2, m3 = st.columns(3)
 

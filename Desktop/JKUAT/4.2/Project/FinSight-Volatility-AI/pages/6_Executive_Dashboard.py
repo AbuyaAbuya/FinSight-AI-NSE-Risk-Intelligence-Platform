@@ -1,30 +1,50 @@
+from pathlib import Path
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 from utils.styles import load_css
-
-st.markdown(
-    load_css(),
-    unsafe_allow_html=True
-)
 
 st.set_page_config(
     page_title="Executive Dashboard",
     layout="wide"
 )
 
+st.markdown(
+    load_css(),
+    unsafe_allow_html=True
+)
+
+# =====================================================
+# FILE PATHS
+# =====================================================
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+OUTPUT_DIR = BASE_DIR / "outputs"
+
 # =====================================================
 # LOAD DATA
 # =====================================================
 
-df = pd.read_csv("outputs/risk_scores.csv")
+try:
+
+    df = pd.read_csv(
+        OUTPUT_DIR / "risk_scores.csv"
+    )
+
+except Exception as e:
+
+    st.error(f"Unable to load risk_scores.csv: {e}")
+    st.stop()
 
 df = df.sort_values(
     "Risk_Score",
     ascending=False
 )
 
-avg_risk = round(df["Risk_Score"].mean(), 1)
+avg_risk = round(
+    df["Risk_Score"].mean(),
+    1
+)
 
 highest_stock = df.iloc[0]
 

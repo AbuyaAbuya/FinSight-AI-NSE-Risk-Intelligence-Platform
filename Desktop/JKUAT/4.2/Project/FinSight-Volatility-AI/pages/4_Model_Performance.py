@@ -1,3 +1,4 @@
+from pathlib import Path
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -7,6 +8,17 @@ st.markdown(
     load_css(),
     unsafe_allow_html=True
 )
+
+# =====================================================
+# FILE PATHS
+# =====================================================
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+OUTPUT_DIR = BASE_DIR / "outputs"
+
+# =====================================================
+# PAGE TITLE
+# =====================================================
 
 st.title("📊 Model Performance")
 
@@ -20,13 +32,15 @@ st.write(
     """
 )
 
-# --------------------------------------------------
-# Load Metrics
-# --------------------------------------------------
+# =====================================================
+# LOAD METRICS
+# =====================================================
 
 try:
 
-    metrics = pd.read_csv("outputs/model_metrics.csv")
+    metrics = pd.read_csv(
+        OUTPUT_DIR / "model_metrics.csv"
+    )
 
     rmse = float(
         metrics.loc[
@@ -44,20 +58,20 @@ try:
 
     r2 = float(
         metrics.loc[
-            metrics["Metric"] == "R2",
+            metrics["Metric"].isin(["R2", "R²"]),
             "Value"
         ].iloc[0]
     )
 
-except:
+except Exception:
 
     rmse = 0
     mae = 0
     r2 = 0
 
-# --------------------------------------------------
+# =====================================================
 # KPI CARDS
-# --------------------------------------------------
+# =====================================================
 
 col1, col2, col3 = st.columns(3)
 
@@ -79,9 +93,9 @@ with col3:
         round(r2, 4)
     )
 
-# --------------------------------------------------
+# =====================================================
 # VISUALIZATION
-# --------------------------------------------------
+# =====================================================
 
 metric_df = pd.DataFrame({
     "Metric": ["RMSE", "MAE", "R²"],
@@ -101,9 +115,24 @@ st.plotly_chart(
     use_container_width=True
 )
 
-# --------------------------------------------------
+# =====================================================
+# METRICS TABLE
+# =====================================================
+
+try:
+    st.subheader("Model Metrics")
+
+    st.dataframe(
+        metrics,
+        use_container_width=True
+    )
+
+except Exception:
+    pass
+
+# =====================================================
 # INTERPRETATION
-# --------------------------------------------------
+# =====================================================
 
 st.subheader("Research Interpretation")
 
@@ -118,10 +147,14 @@ st.success(
 st.info(
     f"""
     Forecasting errors remained low with
-    RMSE={rmse:.4f}
-    and MAE={mae:.4f}.
+    RMSE = {rmse:.4f}
+    and MAE = {mae:.4f}.
     """
 )
+
+# =====================================================
+# CONCLUSION
+# =====================================================
 
 st.subheader("Conclusion")
 
