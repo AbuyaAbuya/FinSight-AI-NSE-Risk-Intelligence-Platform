@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from pathlib import Path
 from utils.styles import load_css
 
 st.markdown(
@@ -7,7 +8,23 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# =====================================================
+# PAGE TITLE
+# =====================================================
+
 st.title("📑 Research Findings")
+
+# =====================================================
+# FILE PATHS
+# =====================================================
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+METRICS_FILE = (
+    BASE_DIR
+    / "outputs"
+    / "model_metrics.csv"
+)
 
 # =====================================================
 # INTRODUCTION
@@ -43,14 +60,20 @@ st.divider()
 
 st.header("Model Performance Results")
 
-metrics = pd.read_csv(
-    "outputs/model_metrics.csv"
-)
+try:
 
-st.dataframe(
-    metrics.round(4),
-    use_container_width=True
-)
+    metrics = pd.read_csv(METRICS_FILE)
+
+    st.dataframe(
+        metrics.round(4),
+        use_container_width=True
+    )
+
+except Exception as e:
+
+    st.error(
+        f"Unable to load model metrics file: {e}"
+    )
 
 st.divider()
 
