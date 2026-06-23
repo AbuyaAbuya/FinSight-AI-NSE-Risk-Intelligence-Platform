@@ -25,19 +25,13 @@ section[data-testid="stSidebar"]{
     background:#0B132B;
 }
 
-/* Sidebar text */
-
 section[data-testid="stSidebar"] *{
     color:white !important;
 }
 
-/* Navigation area */
-
 [data-testid="stSidebarNav"]{
     padding-top:10px;
 }
-
-/* Navigation buttons */
 
 [data-testid="stSidebarNav"] a{
     background:#16213E;
@@ -51,15 +45,11 @@ section[data-testid="stSidebar"] *{
     display:block;
 }
 
-/* Hover effect */
-
 [data-testid="stSidebarNav"] a:hover{
     background:#1E3A5F;
     border-color:#3B82F6;
     transform:translateX(3px);
 }
-
-/* Active page */
 
 [data-testid="stSidebarNav"] a[aria-current="page"]{
     background:linear-gradient(
@@ -69,7 +59,6 @@ section[data-testid="stSidebar"] *{
     ) !important;
 
     color:white !important;
-
     border:none !important;
 
     box-shadow:
@@ -83,8 +72,6 @@ section[data-testid="stSidebar"] *{
     font-weight:700 !important;
 }
 
-/* Navigation list spacing */
-
 [data-testid="stSidebarNav"] ul{
     gap:8px;
 }
@@ -97,6 +84,13 @@ section[data-testid="stSidebar"] *{
     background:#F8FAFC;
 }
 
+.main .block-container{
+    max-width:95%;
+    padding-top:2rem;
+    padding-left:2rem;
+    padding-right:2rem;
+}
+
 /* =====================================================
    METRIC CARDS
 ===================================================== */
@@ -106,7 +100,9 @@ div[data-testid="metric-container"]{
     border-radius:12px;
     border:1px solid #E5E7EB;
     padding:15px;
-    box-shadow:0px 2px 8px rgba(
+
+    box-shadow:
+    0px 2px 8px rgba(
         0,
         0,
         0,
@@ -157,24 +153,25 @@ st.header(
 )
 
 st.markdown("""
-Machine Learning-based stock volatility forecasting,
-portfolio risk management and executive decision support
-for companies listed on the Nairobi Securities Exchange (NSE).
+Machine Learning-powered volatility forecasting,
+market risk intelligence and executive decision
+support for securities listed on the Nairobi
+Securities Exchange (NSE).
 """)
 
 st.divider()
 
 # =====================================================
-# PROJECT STATISTICS
+# PLATFORM STATISTICS
 # =====================================================
 
-st.subheader("Project Statistics")
+st.subheader("Platform Statistics")
 
 c1, c2, c3, c4 = st.columns(4)
 
 with c1:
     st.metric(
-        "Stocks Analyzed",
+        "Securities Analyzed",
         "68"
     )
 
@@ -186,33 +183,37 @@ with c2:
 
 with c3:
     st.metric(
-        "Model Accuracy (R²)",
-        "98.64%"
+        "Model R² Score",
+        "0.9864"
     )
 
 with c4:
     st.metric(
-        "Risk Engine",
+        "Forecasting Engine",
         "Random Forest"
     )
 
 st.divider()
 
 # =====================================================
-# RESEARCH PROJECT
+# PLATFORM OBJECTIVE
 # =====================================================
 
-st.subheader("Research Project")
+st.subheader("Platform Objective")
 
 st.markdown("""
-**Machine Learning-Based Stock Volatility Forecasting and
-Executive Risk Intelligence Platform for Companies Listed
-on the Nairobi Securities Exchange (NSE).**
+FinSight AI provides volatility forecasting,
+market risk intelligence, portfolio analytics
+and executive reporting capabilities for
+Nairobi Securities Exchange listed securities.
 """)
 
-st.subheader("Author")
-
-st.write("Joseph Abuya Abich")
+st.write("""
+The platform is designed to support portfolio
+managers, financial analysts, executives,
+boards and risk management teams through
+data-driven market risk assessment.
+""")
 
 st.divider()
 
@@ -223,15 +224,18 @@ st.divider()
 st.subheader("Executive Overview")
 
 st.write("""
-FinSight AI is a Machine Learning-powered financial intelligence
-platform designed to forecast stock volatility and support
-investment decision-making.
+FinSight AI combines machine learning
+forecasting, volatility risk scoring,
+executive dashboards, portfolio analytics,
+board reporting and risk intelligence
+capabilities into a single platform.
 """)
 
 st.write("""
-The platform combines Random Forest forecasting, risk scoring,
-executive dashboards, portfolio intelligence, board reporting,
-and AI-driven investment recommendations.
+The platform enables users to identify
+volatility risk patterns, monitor market
+conditions and support investment governance
+through objective, data-driven insights.
 """)
 
 st.divider()
@@ -244,12 +248,29 @@ st.subheader("Platform Modules")
 
 st.success("✅ Market Explorer")
 st.success("✅ Volatility Forecasting")
-st.success("✅ Model Performance")
-st.success("✅ Research Findings")
+st.success("✅ Predictive Model Performance")
+st.success("✅ Market Risk Insights")
 st.success("✅ Executive Dashboard")
-st.success("✅ AI Advisory Center")
+st.success("✅ Risk Intelligence Center")
 st.success("✅ Board Pack")
 st.success("✅ Portfolio Risk Simulator")
+
+st.divider()
+
+# =====================================================
+# KEY CAPABILITIES
+# =====================================================
+
+st.subheader("Key Capabilities")
+
+st.markdown("""
+- Forecast future volatility using Machine Learning
+- Classify securities by volatility risk level
+- Monitor market risk concentration
+- Compare securities using volatility rankings
+- Generate executive and board-level risk reports
+- Support portfolio monitoring and risk governance
+""")
 
 st.divider()
 

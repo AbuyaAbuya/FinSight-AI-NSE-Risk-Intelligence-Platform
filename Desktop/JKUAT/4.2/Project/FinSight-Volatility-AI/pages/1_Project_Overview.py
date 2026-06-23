@@ -1,124 +1,223 @@
 import streamlit as st
 from utils.styles import load_css
 
+# =====================================================
+# STYLING
+# =====================================================
+
 st.markdown(
     load_css(),
     unsafe_allow_html=True
 )
 
-st.title("📈 FinSight AI")
+# =====================================================
+# PAGE TITLE
+# =====================================================
 
-st.header(
-    "Executive Market Risk Intelligence Platform"
-)
+st.title("📘 Project Overview")
 
-st.markdown(
-    """
-    Machine Learning-based stock volatility forecasting,
-    portfolio risk management and executive decision support
-    for companies listed on the Nairobi Securities Exchange (NSE).
-    """
-)
+st.markdown("""
+Technical documentation and business overview for the
+**FinSight AI Volatility Risk Intelligence Platform**.
+""")
 
 st.divider()
 
 # =====================================================
-# RESEARCH PROJECT
+# EXECUTIVE SUMMARY
 # =====================================================
 
-st.subheader("Research Project")
+st.header("Executive Summary")
 
-st.write(
-    """
-    Machine Learning-Based Stock Volatility Forecasting
-    and Executive Risk Intelligence Platform for Companies
-    Listed on the Nairobi Securities Exchange (NSE).
-    """
-)
+st.write("""
+FinSight AI is an end-to-end financial analytics platform designed
+to forecast stock market volatility and transform raw market data
+into actionable investment intelligence.
 
-# =====================================================
-# AUTHOR
-# =====================================================
+The solution integrates Machine Learning, Risk Analytics,
+Business Intelligence and Executive Reporting into a unified
+decision-support environment for investors, analysts,
+portfolio managers and executives.
+""")
 
-st.subheader("Author")
-
-st.write("Joseph Abuya Abich")
+st.divider()
 
 # =====================================================
-# PROJECT STATISTICS
+# PROJECT OBJECTIVES
 # =====================================================
 
-st.subheader("Project Statistics")
+st.header("Project Objectives")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    st.success("Forecast future stock volatility")
+    st.success("Classify securities by risk level")
+    st.success("Support portfolio construction")
+
+with col2:
+    st.success("Improve investment decision-making")
+    st.success("Provide executive market intelligence")
+    st.success("Enhance risk monitoring")
+
+st.divider()
+
+# =====================================================
+# DATASET OVERVIEW
+# =====================================================
+
+st.header("Dataset Overview")
 
 c1, c2, c3, c4 = st.columns(4)
 
 with c1:
-    st.metric(
-        "Stocks Analyzed",
-        "68"
-    )
+    st.metric("Stocks", "68")
 
 with c2:
-    st.metric(
-        "Records Processed",
-        "32,000+"
-    )
+    st.metric("Records", "32,000+")
 
 with c3:
-    st.metric(
-        "Model Accuracy (R²)",
-        "98.64%"
-    )
+    st.metric("Exchange", "NSE")
 
 with c4:
-    st.metric(
-        "Risk Engine",
-        "Random Forest"
-    )
+    st.metric("Coverage", "2023-2024")
+
+st.write("""
+The dataset contains historical market information for companies
+listed on the Nairobi Securities Exchange (NSE), including stock
+prices, trading volumes, returns and engineered volatility indicators.
+""")
 
 st.divider()
 
 # =====================================================
-# EXECUTIVE OVERVIEW
+# METHODOLOGY
 # =====================================================
 
-st.subheader("Executive Overview")
+st.header("Methodology")
 
-st.write(
-    """
-    FinSight AI is a Machine Learning-powered
-    financial intelligence platform designed
-    to forecast stock volatility and support
-    investment decision-making.
-    """
-)
+st.write("""
+FinSight AI follows a structured analytics workflow that transforms
+historical market data into predictive volatility intelligence and
+actionable investment insights.
+""")
 
-st.write(
-    """
-    The platform combines Random Forest forecasting,
-    risk scoring, executive dashboards, portfolio
-    intelligence, board reporting, and AI-driven
-    investment recommendations.
-    """
-)
+st.subheader("1️⃣ Data Preparation")
+
+st.info("""
+📥 Market Data Collection
+
+🧹 Data Cleaning & Validation
+
+⚙️ Feature Engineering
+""")
+
+st.write("""
+Historical stock market data is collected from the Nairobi Securities
+Exchange (NSE). Data quality checks, validation procedures and feature
+engineering techniques are applied to prepare the dataset for machine
+learning.
+""")
+
+st.subheader("2️⃣ Machine Learning Engine")
+
+st.info("""
+🤖 Random Forest Model Training
+
+📈 Volatility Forecasting
+""")
+
+st.write("""
+A Random Forest Regression model is trained using engineered market
+features to learn historical volatility patterns and generate future
+volatility forecasts.
+""")
+
+st.subheader("3️⃣ Decision Intelligence")
+
+st.info("""
+🚦 Risk Classification
+
+📊 Executive Intelligence
+
+💼 Portfolio Analytics
+""")
+
+st.write("""
+Forecasted volatility scores are translated into risk categories and
+used to generate portfolio insights, executive dashboards and
+decision-support intelligence.
+""")
+
+st.divider()
 
 # =====================================================
-# PLATFORM CAPABILITIES
+# MACHINE LEARNING FORECASTING ENGINE
 # =====================================================
 
-st.subheader("Platform Capabilities")
+st.header("Machine Learning Forecasting Engine")
 
-st.success("Market Explorer")
+c1, c2, c3, c4 = st.columns(4)
 
-st.success("Volatility Forecasting")
+with c1:
+    st.metric("Model", "Random Forest")
 
-st.success("Executive Dashboard")
+with c2:
+    st.metric("R² Score", "96.53%")
 
-st.success("AI Advisory Center")
+with c3:
+    st.metric("RMSE", "0.3607")
 
-st.success("Board Pack")
+with c4:
+    st.metric("Risk Classes", "3")
 
-st.success("Portfolio Simulator")
+st.write("""
+The Random Forest Regression model was selected due to its ability
+to capture complex non-linear relationships within financial data
+while maintaining strong predictive performance across varying
+market conditions.
+""")
+
+st.success("""
+Model Objective: Forecast Future Stock Volatility
+
+Prediction Output: Volatility Score
+
+Business Outcome: Risk Classification and Investment Intelligence
+""")
+
+st.divider()
+# =====================================================
+# MODEL PERFORMANCE
+# =====================================================
+
+st.header("Model Performance")
+
+c1, c2, c3 = st.columns(3)
+
+with c1:
+    st.metric(
+        "RMSE",
+        "0.3607"
+    )
+
+with c2:
+    st.metric(
+        "MAE",
+        "0.1098"
+    )
+
+with c3:
+    st.metric(
+        "R² Score",
+        "0.9653"
+    )
+
+st.success("""
+The forecasting engine achieved strong predictive performance,
+explaining approximately 96.5% of observed volatility variation
+within the evaluation dataset.
+""")
 
 st.divider()
 
@@ -126,35 +225,119 @@ st.divider()
 # TECHNOLOGY STACK
 # =====================================================
 
-st.subheader("Technology Stack")
+st.header("Technology Stack")
 
-st.info(
-    """
-    Python
+col1, col2, col3 = st.columns(3)
 
-    Streamlit
+with col1:
+    st.info("""
+### Programming
 
-    Plotly
+• Python
 
-    Pandas
+• Pandas
 
-    Scikit-Learn
+• NumPy
+""")
 
-    Random Forest Machine Learning
+with col2:
+    st.info("""
+### Machine Learning
 
-    Financial Risk Analytics
-    """
-)
+• Scikit-Learn
+
+• Random Forest
+
+• Feature Engineering
+""")
+
+with col3:
+    st.info("""
+### Visualization
+
+• Streamlit
+
+• Plotly
+
+• GitHub
+""")
+
+st.divider()
 
 # =====================================================
-# CONCLUSION
+# BUSINESS VALUE
 # =====================================================
 
-st.success(
-    """
-    FinSight AI demonstrates how Machine Learning
-    can be used to transform stock market data
-    into actionable executive intelligence for
-    investors, analysts, CFOs and boards.
-    """
+st.header("Business Value")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    st.success("""
+✓ Improves investment decision-making
+
+✓ Enhances portfolio risk monitoring
+
+✓ Supports portfolio construction
+""")
+
+with col2:
+    st.success("""
+✓ Provides executive intelligence
+
+✓ Enables proactive risk management
+
+✓ Supports strategic planning
+""")
+
+st.divider()
+
+# =====================================================
+# PLATFORM MODULES
+# =====================================================
+
+st.header("Platform Modules")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    st.write("📈 Market Explorer")
+    st.write("🔮 Volatility Forecasting")
+    st.write("📰 Market Intelligence Briefing")
+
+with col2:
+    st.write("📊 Executive Dashboard")
+    st.write("🤖 AI Advisory Center")
+    st.write("💼 Portfolio Risk Simulator")
+
+st.divider()
+
+# =====================================================
+# PROJECT OUTCOME
+# =====================================================
+
+st.header("Project Outcome")
+
+st.success("""
+FinSight AI demonstrates how Machine Learning,
+Financial Analytics and Business Intelligence
+can be integrated into a single platform capable
+of transforming market data into actionable
+investment intelligence.
+
+The solution delivers forecasting, risk
+classification, portfolio analytics,
+executive reporting and AI-powered
+decision support for modern investment
+management.
+""")
+
+st.divider()
+
+# =====================================================
+# FOOTER
+# =====================================================
+
+st.caption(
+    "FinSight AI • Volatility Risk Intelligence Platform • Built with Streamlit, Python and Machine Learning"
 )

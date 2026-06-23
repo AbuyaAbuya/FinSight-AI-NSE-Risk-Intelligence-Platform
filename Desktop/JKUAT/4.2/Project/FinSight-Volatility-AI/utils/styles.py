@@ -3,6 +3,10 @@ def load_css():
     return """
     <style>
 
+    /* =====================================================
+       SIDEBAR
+    ===================================================== */
+
     section[data-testid="stSidebar"]{
         background:#0B132B;
     }
@@ -40,9 +44,7 @@ def load_css():
         ) !important;
 
         color:white !important;
-
         border:none !important;
-
         font-weight:700 !important;
 
         box-shadow:
@@ -54,15 +56,31 @@ def load_css():
         );
     }
 
+    /* =====================================================
+       MAIN PAGE LAYOUT
+    ===================================================== */
+
     .main{
         background:#F8FAFC;
     }
+
+    .main .block-container{
+        max-width:95%;
+        padding-top:2rem;
+        padding-left:2rem;
+        padding-right:2rem;
+    }
+
+    /* =====================================================
+       METRIC CARDS
+    ===================================================== */
 
     div[data-testid="metric-container"]{
         background:white;
         border-radius:12px;
         border:1px solid #E5E7EB;
         padding:15px;
+
         box-shadow:
         0px 2px 8px rgba(
             0,
@@ -70,6 +88,22 @@ def load_css():
             0,
             0.05
         );
+    }
+
+    /* =====================================================
+       HEADINGS
+    ===================================================== */
+
+    h1{
+        color:#0F172A;
+    }
+
+    h2{
+        color:#1E293B;
+    }
+
+    h3{
+        color:#1E293B;
     }
 
     </style>

@@ -5,7 +5,6 @@ import joblib
 from pathlib import Path
 
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split
 from sklearn.metrics import (
     mean_absolute_error,
     mean_squared_error,
@@ -116,21 +115,37 @@ def train_model():
     ]
 
     model_df = df[
-        features + ["Target"]
+        ["Date"] + features + ["Target"]
     ].dropna()
 
-    X = model_df[features]
+    # =====================================================
+    # TIME-BASED SPLIT
+    # =====================================================
 
-    y = model_df["Target"]
-
-    X_train, X_test, y_train, y_test = (
-        train_test_split(
-            X,
-            y,
-            test_size=0.2,
-            random_state=42
-        )
+    model_df = model_df.sort_values(
+        "Date"
     )
+
+    split_index = int(
+        len(model_df) * 0.80
+    )
+
+    train_df = model_df.iloc[:split_index]
+    test_df = model_df.iloc[split_index:]
+
+    print(
+        f"Training Records: {len(train_df)}"
+    )
+
+    print(
+        f"Testing Records: {len(test_df)}"
+    )
+
+    X_train = train_df[features]
+    y_train = train_df["Target"]
+
+    X_test = test_df[features]
+    y_test = test_df["Target"]
 
     model = RandomForestRegressor(
         n_estimators=300,
@@ -164,6 +179,10 @@ def train_model():
         y_test,
         predictions
     )
+
+    print(f"RMSE: {rmse:.4f}")
+    print(f"MAE: {mae:.4f}")
+    print(f"R²: {r2:.4f}")
 
     metrics = pd.DataFrame({
         "Metric": [

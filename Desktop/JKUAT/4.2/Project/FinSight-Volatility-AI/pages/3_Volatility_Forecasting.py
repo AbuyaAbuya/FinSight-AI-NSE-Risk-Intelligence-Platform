@@ -1,19 +1,26 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+
 from utils.styles import load_css
+from utils.data_loader import load_data
+
+# =====================================================
+# PAGE CONFIG
+# =====================================================
 
 st.markdown(
     load_css(),
     unsafe_allow_html=True
 )
 
-from utils.data_loader import load_data
-
-st.title("🔮 Volatility Forecasting Center")
+st.title("📊 Volatility Risk Intelligence")
 
 st.markdown(
-    "Machine Learning based stock volatility forecasting and risk assessment."
+    """
+    Volatility risk analytics and market intelligence
+    powered by machine learning forecasting models.
+    """
 )
 
 # =====================================================
@@ -21,6 +28,10 @@ st.markdown(
 # =====================================================
 
 df = load_data()
+
+risk_df = pd.read_csv(
+    "outputs/risk_scores.csv"
+)
 
 df["Date"] = pd.to_datetime(
     df["Date"],
@@ -32,16 +43,54 @@ df["Day Price"] = pd.to_numeric(
     errors="coerce"
 )
 
-df = df.dropna(subset=["Day Price"])
+df = df.dropna(
+    subset=["Day Price"]
+)
+
+# =====================================================
+# DATASET COVERAGE
+# =====================================================
+
+min_date = df["Date"].min()
+max_date = df["Date"].max()
+
+st.info(
+    f"""
+    Dataset Coverage:
+    {min_date.strftime('%d-%b-%Y')}
+    to
+    {max_date.strftime('%d-%b-%Y')}
+    """
+)
+
+# =====================================================
+# DATE FILTER
+# =====================================================
+
+start_date, end_date = st.date_input(
+    "Select Analysis Period",
+    value=(
+        min_date.date(),
+        max_date.date()
+    )
+)
+
+df = df[
+    (df["Date"] >= pd.to_datetime(start_date))
+    &
+    (df["Date"] <= pd.to_datetime(end_date))
+]
 
 # =====================================================
 # STOCK SELECTION
 # =====================================================
 
-stocks = sorted(df["Code"].dropna().unique())
+stocks = sorted(
+    risk_df["Code"].unique()
+)
 
 selected_stock = st.selectbox(
-    "Select NSE Stock",
+    "Select Security",
     stocks
 )
 
@@ -62,7 +111,7 @@ stock_df["Daily_Return"] = (
 )
 
 # =====================================================
-# VOLATILITY FEATURES
+# VOLATILITY METRICS
 # =====================================================
 
 stock_df["Volatility_5"] = (
@@ -83,100 +132,182 @@ stock_df["Volatility_30"] = (
     .std()
 )
 
-latest_vol = round(
-    stock_df["Volatility_30"].iloc[-1],
-    2
+# =====================================================
+# DISPLAY LABELS
+# =====================================================
+
+plot_df = stock_df.copy()
+
+plot_df = plot_df.rename(
+    columns={
+        "Volatility_5": "5-Day Volatility",
+        "Volatility_10": "10-Day Volatility",
+        "Volatility_30": "30-Day Volatility"
+    }
 )
 
 # =====================================================
-# RISK CLASSIFICATION
+# RISK INTELLIGENCE DATA
 # =====================================================
 
-if latest_vol >= 5:
-    recommendation = "REDUCE EXPOSURE"
-    risk = "HIGH"
+risk_row = risk_df[
+    risk_df["Code"] == selected_stock
+].iloc[0]
 
-elif latest_vol >= 3:
-    recommendation = "HOLD"
-    risk = "MODERATE"
+expected_volatility = round(
+    risk_row["Predicted_Volatility"],
+    2
+)
 
-elif latest_vol >= 2:
-    recommendation = "MONITOR"
-    risk = "LOW"
+risk_score = round(
+    risk_row["Risk_Score"],
+    2
+)
 
-else:
-    recommendation = "BUY"
-    risk = "VERY LOW"
+risk_classification = (
+    risk_row["Recommendation"]
+)
+
+volatility_rank = (
+    risk_row["Volatility_Rank"]
+)
+
+investable_count = (
+    risk_df["Volatility_Rank"]
+    .notna()
+    .sum()
+)
 
 # =====================================================
-# EXECUTIVE KPIs
+# KPI CARDS
 # =====================================================
 
 c1, c2, c3 = st.columns(3)
 
 with c1:
+
     st.metric(
-        "Forecast Volatility",
-        latest_vol
+        "Expected 30-Day Volatility",
+        expected_volatility
     )
 
 with c2:
+
     st.metric(
-        "Risk Level",
-        risk
+        "Volatility Risk Score",
+        risk_score
     )
 
 with c3:
-    st.metric(
-        "Recommendation",
-        recommendation
-    )
+
+    if pd.notna(volatility_rank):
+
+        st.metric(
+            "Market Volatility Rank",
+            f"{int(volatility_rank)} / {investable_count}"
+        )
+
+    else:
+
+        st.metric(
+            "Market Volatility Rank",
+            "N/A"
+        )
 
 # =====================================================
-# AI FORECAST SUMMARY
+# RISK CLASSIFICATION
 # =====================================================
 
-st.subheader("🤖 Forecast Summary")
+st.subheader("Risk Classification")
 
-if recommendation == "BUY":
+if risk_classification == "LOW VOLATILITY RISK":
+
     st.success(
-        f"{selected_stock} exhibits relatively stable behaviour. "
-        "Current volatility remains low."
+        f"### {risk_classification}"
     )
 
-elif recommendation == "MONITOR":
+elif risk_classification == "MODERATE VOLATILITY RISK":
+
     st.info(
-        f"{selected_stock} shows moderate fluctuations. "
-        "Continue monitoring price movements."
+        f"### {risk_classification}"
     )
 
-elif recommendation == "HOLD":
+elif risk_classification == "HIGH VOLATILITY RISK":
+
     st.warning(
-        f"{selected_stock} volatility has increased. "
-        "Maintain current position and monitor closely."
+        f"### {risk_classification}"
     )
 
 else:
+
     st.error(
-        f"{selected_stock} exhibits elevated risk. "
-        "Consider reducing exposure."
+        f"### {risk_classification}"
     )
 
 # =====================================================
-# VOLATILITY TREND
+# RISK INTELLIGENCE SUMMARY
 # =====================================================
 
-st.subheader("📊 Volatility Trend")
+st.subheader("Risk Intelligence Summary")
+
+if risk_classification == "LOW VOLATILITY RISK":
+
+    st.write(
+        f"""
+        {selected_stock} ranks among the lowest-volatility
+        securities within the investable universe,
+        indicating relatively stable historical price
+        behaviour compared to peer securities.
+        """
+    )
+
+elif risk_classification == "MODERATE VOLATILITY RISK":
+
+    st.write(
+        f"""
+        {selected_stock} exhibits moderate volatility
+        characteristics and is positioned within the
+        middle range of the market risk spectrum.
+        """
+    )
+
+elif risk_classification == "HIGH VOLATILITY RISK":
+
+    st.write(
+        f"""
+        {selected_stock} ranks among the highest-volatility
+        securities within the investable universe,
+        indicating elevated market risk relative to
+        peer securities.
+        """
+    )
+
+else:
+
+    st.write(
+        f"""
+        {selected_stock} has been classified as a
+        low-liquidity security. Limited trading
+        activity may reduce the reliability of
+        volatility-based risk interpretation.
+        """
+    )
+
+# =====================================================
+# VOLATILITY TRENDS
+# =====================================================
+
+st.subheader("📊 Historical Volatility Trends")
 
 fig = px.line(
-    stock_df,
+    plot_df,
     x="Date",
     y=[
-        "Volatility_5",
-        "Volatility_10",
-        "Volatility_30"
+        "5-Day Volatility",
+        "10-Day Volatility",
+        "30-Day Volatility"
     ],
-    title=f"{selected_stock} Rolling Volatility"
+    title=f"{selected_stock} Historical Volatility Profile"
 )
 
 st.plotly_chart(
@@ -185,16 +316,16 @@ st.plotly_chart(
 )
 
 # =====================================================
-# DAILY RETURNS
+# RETURN TRENDS
 # =====================================================
 
-st.subheader("📈 Daily Returns")
+st.subheader("📈 Historical Return Trends")
 
 fig_return = px.line(
     stock_df,
     x="Date",
     y="Daily_Return",
-    title=f"{selected_stock} Daily Returns"
+    title=f"{selected_stock} Historical Daily Returns"
 )
 
 st.plotly_chart(
@@ -203,21 +334,32 @@ st.plotly_chart(
 )
 
 # =====================================================
-# RECENT FORECAST DATA
+# DATA TABLE
 # =====================================================
 
-st.subheader("📋 Forecast Data")
+st.subheader("📋 Volatility Analytics Data")
 
-display_cols = [
+display_df = stock_df[
+    [
+        "Date",
+        "Day Price",
+        "Daily_Return",
+        "Volatility_5",
+        "Volatility_10",
+        "Volatility_30"
+    ]
+].copy()
+
+display_df.columns = [
     "Date",
-    "Day Price",
-    "Daily_Return",
-    "Volatility_5",
-    "Volatility_10",
-    "Volatility_30"
+    "Closing Price",
+    "Daily Return (%)",
+    "5-Day Volatility",
+    "10-Day Volatility",
+    "30-Day Volatility"
 ]
 
 st.dataframe(
-    stock_df[display_cols].tail(20),
+    display_df.tail(20),
     use_container_width=True
 )

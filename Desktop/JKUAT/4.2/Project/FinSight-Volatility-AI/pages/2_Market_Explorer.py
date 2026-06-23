@@ -10,8 +10,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-from utils.data_loader import load_data
-
 # =========================================================
 # PAGE TITLE
 # =========================================================
@@ -39,6 +37,7 @@ df["Day Price"] = pd.to_numeric(
 )
 
 # Clean Volume
+
 df["Volume"] = (
     df["Volume"]
     .astype(str)
@@ -56,11 +55,49 @@ df = df.dropna(
 )
 
 # =========================================================
+# DATE FILTER
+# =========================================================
+
+min_date = df["Date"].min()
+max_date = df["Date"].max()
+
+st.info(
+    f"""
+Dataset Coverage:
+{min_date.strftime('%d-%b-%Y')}
+to
+{max_date.strftime('%d-%b-%Y')}
+"""
+)
+
+selected_dates = st.date_input(
+    "Select Analysis Period",
+    value=(
+        min_date.date(),
+        max_date.date()
+    ),
+    min_value=min_date.date(),
+    max_value=max_date.date()
+)
+
+if len(selected_dates) == 2:
+
+    start_date, end_date = selected_dates
+
+    df = df[
+        (df["Date"] >= pd.to_datetime(start_date))
+        &
+        (df["Date"] <= pd.to_datetime(end_date))
+    ].copy()
+
+# =========================================================
 # STOCK SELECTION
 # =========================================================
 
 stocks = sorted(
-    df["Code"].dropna().unique()
+    df["Code"]
+    .dropna()
+    .unique()
 )
 
 selected_stock = st.selectbox(
@@ -99,24 +136,28 @@ avg_return = stock_df["Daily Return"].mean()
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
+
     st.metric(
         "Latest Price",
         f"{latest_price:.2f}"
     )
 
 with col2:
+
     st.metric(
         "Average Price",
         f"{avg_price:.2f}"
     )
 
 with col3:
+
     st.metric(
         "Highest Price",
         f"{max_price:.2f}"
     )
 
 with col4:
+
     st.metric(
         "Average Return %",
         f"{avg_return:.2f}"
@@ -157,7 +198,6 @@ st.plotly_chart(
     fig_return,
     use_container_width=True
 )
-
 # =========================================================
 # RETURN DISTRIBUTION
 # =========================================================
