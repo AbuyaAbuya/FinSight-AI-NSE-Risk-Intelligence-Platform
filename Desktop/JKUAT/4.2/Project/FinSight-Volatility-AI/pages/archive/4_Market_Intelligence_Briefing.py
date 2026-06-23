@@ -193,7 +193,6 @@ st.dataframe(
 )
 
 st.divider()
-
 # =====================================================
 # HIGHEST VOLATILITY SECURITIES
 # =====================================================
@@ -227,68 +226,6 @@ st.dataframe(
 st.divider()
 
 # =====================================================
-# MARKET LEADERS
-# =====================================================
-
-st.header("Market Leaders")
-
-try:
-
-    safest_security = (
-        risk_df[
-            risk_df["Recommendation"]
-            == "LOW VOLATILITY RISK"
-        ]
-        .sort_values(
-            "Risk_Score"
-        )
-        .iloc[0]
-    )
-
-    highest_risk_security = (
-        risk_df[
-            risk_df["Recommendation"]
-            == "HIGH VOLATILITY RISK"
-        ]
-        .sort_values(
-            "Risk_Score",
-            ascending=False
-        )
-        .iloc[0]
-    )
-
-    c1, c2 = st.columns(2)
-
-    with c1:
-
-        st.success(
-            f"""
-Safest Security
-
-{ safest_security['Code'] }
-
-Risk Score: { safest_security['Risk_Score']:.2f }
-"""
-        )
-
-    with c2:
-
-        st.warning(
-            f"""
-Highest Volatility Risk Security
-
-{ highest_risk_security['Code'] }
-
-Risk Score: { highest_risk_security['Risk_Score']:.2f }
-"""
-        )
-
-except Exception:
-    pass
-
-st.divider()
-
-# =====================================================
 # EXECUTIVE COMMENTARY
 # =====================================================
 
@@ -311,8 +248,49 @@ efforts on securities classified as High
 Volatility Risk while maintaining awareness
 of liquidity limitations affecting
 {low_liquidity} securities.
+
+The market continues to present a blend of
+defensive and growth-oriented opportunities,
+with risk levels varying significantly across
+individual securities.
 """
 )
+
+st.divider()
+
+# =====================================================
+# INVESTMENT CONSIDERATIONS
+# =====================================================
+
+st.header("Investment Considerations")
+
+st.success(
+    """
+• Prioritize securities classified as
+  Low Volatility Risk for defensive
+  portfolio positioning.
+
+• Maintain diversified exposure across
+  sectors to mitigate concentration risk.
+
+• Monitor High Volatility Risk securities
+  closely for significant market movements.
+"""
+)
+
+st.warning(
+    """
+• Elevated volatility may create both
+  investment opportunities and downside
+  risk.
+
+• Liquidity constraints should be
+  considered before portfolio allocation
+  decisions are made.
+"""
+)
+
+st.divider()
 
 # =====================================================
 # FOOTER
