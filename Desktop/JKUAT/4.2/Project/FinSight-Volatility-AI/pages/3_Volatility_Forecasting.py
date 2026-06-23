@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+from pathlib import Path
 
 from utils.styles import load_css
 from utils.data_loader import load_data
@@ -24,13 +25,17 @@ st.markdown(
 )
 
 # =====================================================
+# =====================================================
 # LOAD DATA
 # =====================================================
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+OUTPUT_DIR = BASE_DIR / "outputs"
 
 df = load_data()
 
 risk_df = pd.read_csv(
-    "outputs/risk_scores.csv"
+    OUTPUT_DIR / "risk_scores.csv"
 )
 
 df["Date"] = pd.to_datetime(
