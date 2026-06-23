@@ -4,7 +4,7 @@
 
 ## Live Application
 
-https://finsight-ai-nse-risk-intelligence-platform-jzuvvmki5jxmvbbaaaa.streamlit.app/
+[https://finsight-ai-nse-risk-intelligence-platform-jzuvvmki5jxmvbbaaaa.streamlit.app/](https://finsight-ai-nse-risk-intelligence-platform-wugbgjlvidqldqebamc.streamlit.app/Model_Performance)
 
 ## Overview
 
