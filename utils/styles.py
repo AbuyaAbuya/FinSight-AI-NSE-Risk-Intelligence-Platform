@@ -6,6 +6,10 @@ def load_css():
     /* =====================================================
        SIDEBAR
     ===================================================== */
+    /* Hide sidebar collapse arrow */
+[data-testid="collapsedControl"]{
+    display:none !important;
+}
 
     section[data-testid="stSidebar"]{
         background:#0B132B;
